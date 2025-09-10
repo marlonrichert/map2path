@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+
+export UV_PROJECT=${${(%):-%N}:A:h:h}
+
+local out
+if ! out="$( uv sync 2>&1 )"; then
+  local ret=$?
+  print -r -- "$out" >&2
+  exit $ret
+fi
+
+source $UV_PROJECT/.venv/bin/activate && python -m map2path "$@"
